@@ -1,21 +1,27 @@
-#terminal prompt
+# terminal prompt
 export PS1="| \[\e[0;31m\]\u\[\e[0m\]@\[\e[0;34m\]\w\[\e[0m\]\[\033[32m\]\$(parse_git_branch)\[\033[00m\] \n| => "
-export PS2='\[\e[0;31m\]\u\[\e[0m\]@\[\e[0;34m\]\w\[\e[0m\]\$ '
-#enable colors
+export PS2="| => "
+
+# colors
 export CLICOLOR=1
-#specify colors
 export LSCOLORS=GxFxCxDxBxegedabagaced
 
 export EDITOR=/usr/bin/vim
 export BLOCKSIZE=1k
 
-export GOPATH=$HOME/golang
+# Go
+export GOPATH=$HOME/go
 export GOROOT=/usr/local/opt/go/libexec
 export PATH=$PATH:$GOPATH/bin
 export PATH=$PATH:$GOROOT/bin
 
-export NVM_DIR="/Users/rosa/.nvm"
+# Binaries
+export PATH=$PATH:$HOME/bin
+
+# NVM - node version manager
+export NVM_DIR="/Users/davros/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
 
 # Open current folder in finder
 alias f='open -a Finder ./'
@@ -42,24 +48,22 @@ alias .5='cd ../../../../../'               # Go back 5 directory levels
 alias .6='cd ../../../../../../'            # Go back 6 directory levels
 alias ~="cd ~"
 
-alias edit='atom'
+# Prepare via ln -s "/Applications/Sublime Text.app/Contents/SharedSupport/bin/subl" ~/bin/sublime
+alias edit='sublime'
+alias sedit='sudo sublime'
 alias c='clear'
 
-alias which='type -all'
+alias which='terminalype -all'
 alias path='echo -e ${PATH//:/\\n}'
 
 # Fix messed up terminal
 alias fix_stty='stty sane'
-
-# Write piped output to desktop file out.txt
-alias DT='tee ~/Desktop/out.txt'
 
 # Listings
 alias lr='ls -R | grep ":$" | sed -e '\''s/:$//'\'' -e '\''s/[^-][^\/]*\//--/g'\'' -e '\''s/^/   /'\'' -e '\''s/-/|/'\'' | less'
 alias ls='ls -l'
 alias ll='ls -FGlAhp'
 cd() { builtin cd "$@"; ll; }
-alias ttop="top -R -F -s 10 -o rsize"
 
 # Network
 alias myip='curl ip.appspot.com'                    # myip:         Public facing IP Address
@@ -84,6 +88,9 @@ alias drmi='docker rmi'
 alias dmi='docker images'
 alias di='docker inspect'
 
+#kubernetes
+alias k='kubectl'
+
 #vagrant
 alias vssh='vagrant ssh'
 alias vup='vagrant up'
@@ -91,28 +98,20 @@ alias vhalt='vagrant halt'
 alias vprovision='vagrant provision'
 
 #folders
-alias _s='cd /Users/rosa/Dropbox/FIT/'
-alias _p='cd /Users/rosa/Projects/'
-alias _projects='cd /Users/rosa/Projects/'
-
-#git
+alias _github='cd ~/git/github.com'
+alias _s2='cd ~/git/git.sinnerschrader.com'
+alias _s2s='cd ~/git/gitlab.sinnerschraderswipe.com'
+alias _s2c='cd ~/git/git.sinnerschrader.com/contentplatform'
+alias _g='cd ~/go/src'
+alias _go='_g'
+alias _d='cd ~/Drive/'
+alias _drive='_d'
 
 # Git branch in prompt.
 parse_git_branch() {
     git branch 2> /dev/null | sed -e '/^[^*]/d' -e 's/* \(.*\)/ (\1)/'
 }
 test -f ~/.git-completion.bash && . $_
-
-#ssh hosts
-alias ssh_umblog='ssh -A -t -l davros chiara ssh -A -t -l szzdev ume-op ssh -A -t -l szzdev ume-blog-shortterm01.int'
-
-# Search man page: mans <command> <key>
-mans () {
-    man $1 | grep -iC2 --color=always $2 | less
-}
-
-# List processes owned by me
-my_ps() { ps $@ -u $USER -o pid,%cpu,%mem,start,time,bsdtime,command ; }
 
 # Mkdir and cd into it
 mcd () { mkdir -p "$1" && cd "$1"; }
@@ -136,3 +135,10 @@ ii() {
     #echo -e "\n${RED}DNS Configuration:$NC " ; scutil --dns
     echo
 }
+
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/davros/gcloud/path.bash.inc' ]; then source '/Users/davros/gcloud/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/davros/gcloud/completion.bash.inc' ]; then source '/Users/davros/gcloud/completion.bash.inc'; fi
